@@ -11,7 +11,7 @@ class App extends React.Component {
 }
 
 
-  shit = async ()=> {
+  getPosts = async ()=> {
     let data = await fetch("https://localhost:7061/get-all-posts", {
       method: "Get",
     });
@@ -27,7 +27,20 @@ class App extends React.Component {
    
   }
 
- 
+  deletePost =async (postId)=>{
+    console.log(postId)
+    const url=`https://localhost:7061/post-delete?id=`+postId
+    let data = await fetch(url, {
+      method: "DELETE",
+    });
+    let result = await data.json();   
+    this.getPosts();
+   await this.setState((state) => {
+      return {
+       
+      };
+    });
+  }
   render(){
   return (
      
@@ -36,7 +49,7 @@ class App extends React.Component {
         <div class="col d-flex flex-column justify-content-center align-items-center">
           <h1> Welcome to React App</h1>
           
-          <button class="btn btn-secondary btn-lg mx-3 my-3" onClick={this.shit}>Get Data</button>
+          <button class="btn btn-secondary btn-lg mx-3 my-3" onClick={this.getPosts}>Get Data</button>
           {this.table()}
          
         </div>
@@ -69,7 +82,9 @@ class App extends React.Component {
                 <button class="btn btn-secondary btn-lg mx-3 my-3 ">
                   Update
                 </button>
-                <button class="btn btn-dark btn-lg mx-3 my-3 ">Delete</button>
+                <button class="btn btn-dark btn-lg mx-3 my-3 " onClick={()=>{
+                  if(window.confirm(`Are you sure you want to delete "${fk.title}"`)) this.deletePost(fk.postId)
+                }}>Delete</button>
               </td>
             </tr>
           ))}
