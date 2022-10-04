@@ -1,43 +1,52 @@
-import React,{useState}  from "react";
+import React  from "react";
 
-function App () {  
-  
- const [posts, setPosts] = useState([]);
-
-
-function getPosts (){ 
-  const url = "https://localhost:7061/get-all-posts";
-
-  fetch(url, {
-    method: 'GET'
-  })
-    .then(response => response.json())
-    .then(postsFromServer => {
-      setPosts(postsFromServer);
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error);
-    });
+class App extends React.Component {  
+ posts=[]
+  constructor(){
+    super();
+  this.state={
+     posts : [],
+     count : 199
+  };
 }
 
 
-  return (     
+  shit = async ()=> {
+    let data = await fetch("https://localhost:7061/get-all-posts", {
+      method: "Get",
+    });
+    let result = await data.json();
+   
+    
+   await this.setState((state) => {
+      return {
+       posts: result
+      };
+    });
+    await console.log(this.state.posts);
+   
+  }
+
+ 
+  render(){
+  return (
+     
     <div class="container">
       <div class="row min-vh-100">
         <div class="col d-flex flex-column justify-content-center align-items-center">
           <h1> Welcome to React App</h1>
           
-          <button class="btn btn-secondary btn-lg mx-3 my-3" onClick={getPosts}>Get Data</button>
-          {table()}
+          <button class="btn btn-secondary btn-lg mx-3 my-3" onClick={this.shit}>Get Data</button>
+          {this.table()}
          
         </div>
       </div>
-    </div>    
+    </div>
+    
   );
-  
+  }
 
-   function table() {
+   table =()=> {
     return (
       <table class="table table-bordered border-dark">
         <thead>
@@ -49,10 +58,10 @@ function getPosts (){
           </tr>
         </thead>
         <tbody>
-          {posts.map((fk) => (
+          {this.state.posts.map((fk) => (
             <tr key={fk.postId}>
               <th class="text-center align-middle" scope="row">
-              {fk.postId}
+                {fk.postId}
               </th>
               <td class="text-center align-middle">{fk.title}</td>
               <td class="text-center align-middle">{fk.content}</td>
@@ -68,6 +77,6 @@ function getPosts (){
       </table>
     );
   }
-
 }
+
 export default App;
