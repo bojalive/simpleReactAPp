@@ -1,5 +1,6 @@
 import React  from "react";
-
+import constants from "./utilities/Constants";
+import Constants  from "./utilities/Constants";
 class App extends React.Component {  
  posts=[]
   constructor(){
@@ -12,7 +13,7 @@ class App extends React.Component {
 
 
   getPosts = async ()=> {
-    let data = await fetch("https://localhost:7061/get-all-posts", {
+    let data = await fetch(Constants.API_BASE_URI_GET_ALL_POSTS, {
       method: "Get",
     });
     let result = await data.json();
@@ -28,8 +29,9 @@ class App extends React.Component {
   }
 
   deletePost =async (postId)=>{
-    console.log(postId)
-    const url=`https://localhost:7061/post-delete?id=`+postId
+   
+    const url= constants.API_BASE_URI_POST_DELETE+"?id="+postId
+    console.log(url)
     let data = await fetch(url, {
       method: "DELETE",
     });
